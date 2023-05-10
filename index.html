@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Kanban Board</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="overlay">
+      <div class="content">
+        <h2>Are you sure want to delete all</h2>
+        <div class="btns">
+          <button class="yes-all">YES</button>
+          <button class="no-all">NO</button>
+        </div>
+      </div>
+    </div>
+    <h1>
+      To Do tracker
+      <button class="del-all-btn">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </h1>
+    <div class="container">
+      <div class="box1">
+        <h3>To Do</h3>
+        <button class="to-do-btn"><i class="fa-solid fa-plus"></i> Add</button>
+        <ul class="todo">
+          <p class="BuggyOne">
+            <!-- <li draggable="true">
+            <input type="text" placeholder="enter ur task" />
+            <button class="del-btn">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </li>
+          <li draggable="true">
+            <input type="text" placeholder="enter ur task" />
+            <button class="del-btn">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </li>
+
+          <li draggable="true">
+            <input type="text" placeholder="enter ur task" />
+            <button class="del-btn">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </li> -->
+          </p>
+        </ul>
+      </div>
+      <div class="box2">
+        <h3>In Progress</h3>
+        <button class="in-progress-btn">
+          <i class="fa-solid fa-plus"></i> Add
+        </button>
+
+        <ul class="nowdo">
+          <p class="BuggyOne">
+            <!-- 
+          <li draggable="true">
+            <input type="text" placeholder="enter ur task" />
+
+            <button class="del-btn">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </li>
+          <li draggable="true">
+            <input type="text" placeholder="enter ur task" />
+
+            <button class="del-btn">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </li> -->
+          </p>
+        </ul>
+      </div>
+      <div class="box3">
+        <h3>Done</h3>
+        <button class="done-btn"><i class="fa-solid fa-plus"></i> Add</button>
+
+        <ul class="done">
+          <p class="BuggyOne">
+            <!-- <li draggable="true">
+            <input type="text" placeholder="enter ur task" />
+            <button class="del-btn">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </li>
+          <li draggable="true">
+            <input type="text" placeholder="enter ur task" />
+            <button class="del-btn">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </li>
+          <li draggable="true">
+            <input type="text" placeholder="enter ur task" />
+
+            <button class="del-btn">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </li>
+          <li draggable="true">
+            <input type="text" placeholder="enter ur task" />
+            <button class="del-btn">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </li> -->
+          </p>
+        </ul>
+      </div>
+    </div>
+    <script src="script.js"></script>
+    <script id="DragDropTouch" src="https://bernardo-castilho.github.io/DragDropTouch/DragDropTouch.js"></script>
+  </body>
+</html>
