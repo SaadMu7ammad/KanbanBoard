@@ -11,9 +11,9 @@
 }
 
 body {
-  background: no-repeat
+/*   background: no-repeat
     linear-gradient(to bottom, rgb(141, 141, 36), #ffa, rgba(0, 0, 255, 0.671));
-
+ */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
