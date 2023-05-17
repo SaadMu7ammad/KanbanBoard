@@ -2,9 +2,6 @@ const deleteAllBtn = document.querySelector('.del-all-btn');
 const YesDeleteAllBtn = document.querySelector('.yes-all');
 const NoDeleteAllBtn = document.querySelector('.no-all');
 
-// let LocalContaienr = getLocal(id);
-// let InProgressContaienr = getInPorgress();
-// let DoneContaienr = getDone();
 let oldValueTask;
 let todoTasks = JSON.parse(localStorage.getItem('todoTasks')) || [];
 let inProgressTasks = JSON.parse(localStorage.getItem('inProgressTasks')) || [];
@@ -14,9 +11,11 @@ function saveToLocalStorage() {
   localStorage.setItem('inProgressTasks', JSON.stringify(inProgressTasks));
   localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
 }
-
-let Tracker = 1;
-
+function clearLocalStorage() {
+  localStorage.clear('todoTasks');
+  localStorage.clear('inProgressTasks');
+  localStorage.clear('doneTasks');
+}
 deleteAllBtn.addEventListener('click', () => {
   document.querySelector('.overlay').classList.toggle('show');
 });
@@ -28,11 +27,19 @@ YesDeleteAllBtn.addEventListener('click', () => {
   todoTasks = [];
   inProgressTasks = [];
   doneTasks = [];
-  saveToLocalStorage();
+  // saveToLocalStorage();
   document.querySelector('.overlay').classList.toggle('show');
-
-  window.location.reload();
+  clearLocalStorage();
+  // window.location.reload();
+  deleteAllTasks();
 });
+function deleteAllTasks() {
+  document.querySelectorAll('ul').forEach((li) => {
+    li.querySelectorAll('li').forEach((it) => {
+      it.remove();
+    });
+  });
+}
 //add a new task in each category
 const toDoBtn = document.querySelector('.to-do-btn');
 const InprogressBtn = document.querySelector('.in-progress-btn');
@@ -48,14 +55,19 @@ toDoBtn.addEventListener('click', () => {
 <button class="del-btn">
   <i class="fa-solid fa-trash"></i>
 </button>`;
-  listItem.setAttribute('id', Tracker++);
+  // listItem.setAttribute('id', Tracker++);
 
   document.querySelector('.todo').appendChild(listItem);
-
+  //for create task not drag
   listItem.querySelector('.del-btn').addEventListener('click', (e) => {
     console.log(e.target.closest('.del-btn'));
-    console.log(e.target.closest('li').getAttribute('id'));
+    // console.log(e.target.closest('li').getAttribute('id'));
     console.log(e.target.closest('li').querySelector('input').value);
+    delTextLocalStorage(
+      e.target.closest('li').querySelector('input').value,
+      e.target.closest('ul').className
+    );
+
     let selectedDeleted = e.target.closest('li').querySelector('input').value;
     for (let i = 0; i < todoTasks.length; i++) {
       if (todoTasks[i] === selectedDeleted) {
@@ -82,10 +94,7 @@ toDoBtn.addEventListener('click', () => {
   listItem.querySelector('input').addEventListener('change', (e) => {
     console.log(e.target.value);
     txt = e.target.value;
-    // console.log(it.closest('li').getAttribute('id'));
-    // listItem.querySelector('input').focus()
-    // loadFromLocalStorage();
-    // setDone(it.closest('li').getAttribute('id'), event.target.value);
+
     if (e.target.value.trim() !== null) {
       todoTasks.push(e.target.value);
     }
@@ -100,27 +109,12 @@ toDoBtn.addEventListener('click', () => {
         todoTasks.splice(i, 1);
       }
     }
-    // doneTasks.forEach((tasks) => {
-    //   // console.log(tasks);
-    //   if (tasks === oldValueTask.trim()) {
-    //     tasks = e.target.value;
-    //   }
 
-    // console.log(doneTasks);
     saveToLocalStorage();
-    window.location.reload();
+    // window.location.reload();
   });
 
-  // it.addEventListener('change', (event) => {
-  //   console.log(event.target.value);
-
-  //   console.log(it.closest('li').getAttribute('id'));
-
-  //   // loadFromLocalStorage();
-  //   // setDone(it.closest('li').getAttribute('id'), event.target.value);
-  // });
   reload();
-  localReload();
 });
 
 InprogressBtn.addEventListener('click', () => {
@@ -133,14 +127,19 @@ InprogressBtn.addEventListener('click', () => {
 <button class="del-btn">
   <i class="fa-solid fa-trash"></i>
 </button>`;
-  listItem.setAttribute('id', Tracker++);
+  // listItem.setAttribute('id', Tracker++);
 
   document.querySelector('.nowdo').appendChild(listItem);
 
   listItem.querySelector('.del-btn').addEventListener('click', (e) => {
     console.log(e.target.closest('.del-btn'));
-    console.log(e.target.closest('li').getAttribute('id'));
+    // console.log(e.target.closest('li').getAttribute('id'));
     console.log(e.target.closest('li').querySelector('input').value);
+    console.log(e.target.closest('ul').className);
+    delTextLocalStorage(
+      e.target.closest('li').querySelector('input').value,
+      e.target.closest('ul').className
+    );
     let selectedDeleted = e.target.closest('li').querySelector('input').value;
     for (let i = 0; i < inProgressTasks.length; i++) {
       if (inProgressTasks[i] === selectedDeleted) {
@@ -169,16 +168,10 @@ InprogressBtn.addEventListener('click', () => {
   listItem.querySelector('input').addEventListener('change', (e) => {
     console.log(e.target.value);
 
-    // console.log(it.closest('li').getAttribute('id'));
-    //
-    // loadFromLocalStorage();
-    // setDone(it.closest('li').getAttribute('id'), event.target.value);
     if (e.target.value.trim() !== null) {
       inProgressTasks.push(e.target.value);
     }
-    // console.log(doneTasks);
-    // foundedIndex = -1;
-    // doneTasks = JSON.parse(localStorage.getItem('doneTasks'))
+
     for (let i = 0; i < inProgressTasks.length; i++) {
       if (inProgressTasks[i] === oldValueTask.trim()) {
         foundedIndex = i;
@@ -187,27 +180,13 @@ InprogressBtn.addEventListener('click', () => {
         inProgressTasks.splice(i, 1);
       }
     }
-    // doneTasks.forEach((tasks) => {
-    //   // console.log(tasks);
-    //   if (tasks === oldValueTask.trim()) {
-    //     tasks = e.target.value;
-    //   }
 
     // console.log(doneTasks);
     saveToLocalStorage();
-    window.location.reload();
+    // window.location.reload();
   });
 
-  // it.addEventListener('change', (event) => {
-  //   console.log(event.target.value);
-
-  //   console.log(it.closest('li').getAttribute('id'));
-
-  //   // loadFromLocalStorage();
-  //   // setDone(it.closest('li').getAttribute('id'), event.target.value);
-  // });
   reload();
-  localReload();
 });
 
 DoneBtn.addEventListener('click', () => {
@@ -220,16 +199,22 @@ DoneBtn.addEventListener('click', () => {
 <button class="del-btn">
   <i class="fa-solid fa-trash"></i>
 </button>`;
-  listItem.setAttribute('id', Tracker++);
+  // listItem.setAttribute('id', Tracker++);
 
   document.querySelector('.done').appendChild(listItem);
 
   listItem.querySelector('.del-btn').addEventListener('click', (e) => {
     console.log(e.target.closest('.del-btn'));
-    console.log(e.target.closest('li').getAttribute('id'));
+    // console.log(e.target.closest('li').getAttribute('id'));
 
     console.log(e.target.closest('li').querySelector('input').value);
+    delTextLocalStorage(
+      e.target.closest('li').querySelector('input').value,
+      e.target.closest('ul').className
+    );
+
     let selectedDeleted = e.target.closest('li').querySelector('input').value;
+    // console.log(e.target.closest('ul'));
     for (let i = 0; i < doneTasks.length; i++) {
       if (doneTasks[i] === selectedDeleted) {
         doneTasks.splice(i, 1);
@@ -252,17 +237,10 @@ DoneBtn.addEventListener('click', () => {
   });
   listItem.querySelector('input').addEventListener('change', (e) => {
     console.log(e.target.value);
-
-    // console.log(it.closest('li').getAttribute('id'));
-    //
-    // loadFromLocalStorage();
-    // setDone(it.closest('li').getAttribute('id'), event.target.value);
     if (e.target.value.trim() !== null) {
       doneTasks.push(e.target.value);
     }
-    // console.log(doneTasks);
-    // foundedIndex = -1;
-    // doneTasks = JSON.parse(localStorage.getItem('doneTasks'))
+
     for (let i = 0; i < doneTasks.length; i++) {
       if (doneTasks[i] === oldValueTask.trim()) {
         foundedIndex = i;
@@ -271,47 +249,13 @@ DoneBtn.addEventListener('click', () => {
         doneTasks.splice(i, 1);
       }
     }
-    // doneTasks.forEach((tasks) => {
-    //   // console.log(tasks);
-    //   if (tasks === oldValueTask.trim()) {
-    //     tasks = e.target.value;
-    //   }
 
-    // console.log(doneTasks);
     saveToLocalStorage();
-    window.location.reload();
+    // window.location.reload();
   });
 
-  // it.addEventListener('change', (event) => {
-  //   console.log(event.target.value);
-
-  //   console.log(it.closest('li').getAttribute('id'));
-
-  //   // loadFromLocalStorage();
-  //   // setDone(it.closest('li').getAttribute('id'), event.target.value);
-  // });
   reload();
-  localReload();
 });
-
-function localReload() {
-  const input = document.querySelectorAll('input');
-  // console.log(input);
-  const arrInputs = [...input];
-  arrInputs.forEach((it) => {
-    // it.addEventListener('keydown', (event) => {
-    //   if (event.key === 'Enter') {
-    //     it.blur();
-    //   }
-    // });
-    // it.addEventListener('change', (event) => {
-    //   console.log(event.target.value);
-    //   console.log(it.closest('li').getAttribute('id'));
-    //   // loadFromLocalStorage();
-    //   // setDone(it.closest('li').getAttribute('id'), event.target.value);
-    // });
-  });
-}
 
 //delete specific task
 const delBtns = document.querySelectorAll('.del-btn');
@@ -338,7 +282,7 @@ function reload() {
       // e.dataTransfer.setData('text/plain', e.target.getAttribute('id'));
       // DataTransfer.effectAllowed = 'move';
       txt = li.querySelector('input').value;
-console.log(txt);
+      console.log(txt);
       li.classList.add('is-dragging');
       console.log(e.target.closest('ul'));
       globalStart = e.target.closest('ul');
@@ -355,7 +299,6 @@ console.log(txt);
 droppables.forEach((area) => {
   area.addEventListener('dragover', (e) => {
     // txt = e.target.closest('li').querySelector('input').value;
-
     const currentDraging = document.querySelector('.is-dragging');
     // if (e.dataTransfer.types[0] !== 'text/plain') return;
     e.preventDefault();
@@ -372,11 +315,9 @@ droppables.forEach((area) => {
   area.addEventListener('drop', (e) => {
     console.log('Dropped');
     console.log(e.target.closest('ul'));
+    console.log(e.target.closest('li'));
     globalEnd = e.target.closest('ul');
-
-    // const taskID = e.dataTransfer.getData('text/plain');
     if (globalStart !== globalEnd) {
-      //there is a bug hereeeeeeeeeeeeeeeeee when a ul is empty and u drag it a li
       if (globalEnd.querySelectorAll('li').length > 0) {
         // console.log(globalEnd.querySelector('input').value);
         // const txt = globalStart.querySelector('input').value;
@@ -392,11 +333,11 @@ droppables.forEach((area) => {
               if (globalEnd.className === 'todo') {
                 todoTasks.push(txt);
                 saveToLocalStorage();
-                window.location.reload();
+                // window.location.reload();
               } else if (globalEnd.className === 'done') {
                 doneTasks.push(txt);
+                console.log('object');
                 saveToLocalStorage();
-                window.location.reload();
               }
             }
           }
@@ -410,35 +351,27 @@ droppables.forEach((area) => {
               if (globalEnd.className === 'nowdo') {
                 inProgressTasks.push(txt);
                 saveToLocalStorage();
-                window.location.reload();
+                // window.location.reload();
               } else if (globalEnd.className === 'done') {
                 doneTasks.push(txt);
                 saveToLocalStorage();
-                window.location.reload();
+                // window.location.reload();
               }
             }
           }
         } else if (globalStart.className === 'done') {
-          console.log('yyyyyyyyyyyyyy');
-          console.log(doneTasks.length);
           for (let i = 0; i < doneTasks.length; i++) {
             console.log(doneTasks[i]);
             console.log(txt);
             if (doneTasks[i] == txt) {
-              console.log('xxx');
-              // foundedIndex = i;
-              // console.log(oldValueTask);
-              // inProgressTasks[i] = e.target.value;
               doneTasks.splice(i, 1);
               if (globalEnd.className === 'nowdo') {
                 inProgressTasks.push(txt);
                 saveToLocalStorage();
-                window.location.reload();
               } else if (globalEnd.className === 'todo') {
                 todoTasks.push(txt);
                 console.log(txt);
                 saveToLocalStorage();
-                window.location.reload();
               }
             } else {
               console.log(txt);
@@ -457,29 +390,6 @@ droppables.forEach((area) => {
     // area.style.backgroundColor = 'transparent';
   });
 });
-
-// function getDragAfterElements(overArea, yMouse) {
-//   //gets the all li in the same box (ToDO / InProgress / Done) (area)
-//   const draggableElements = [
-//     ...overArea.querySelectorAll('li:not(.is-dragging)'),
-//   ];
-//   //must be array to use the reduce function
-//   // console.log(draggableElements);
-//   return draggableElements.reduce(
-//     (distance, el) => {
-//       const box = el.getBoundingClientRect();
-//       const offset = yMouse - box.top - box.height / 2;
-//       console.log(offset);
-//       if (offset < 0 && offset>distance.offset) {//above the element
-//         return {offset:offset,elmnt:el}
-//       }
-//       else {
-//         return distance;
-//       }
-//     },
-//     { offset: Number.NEGATIVE_INFINITY }
-//   ).elmnt;
-// }
 
 function getDragAfterElements(overArea, yMouse) {
   //gets the all li in the same box (ToDO / InProgress / Done) (area)
@@ -504,9 +414,42 @@ function getDragAfterElements(overArea, yMouse) {
   });
   return closestTask;
 }
+function delText(text, delFrom) {
+  const listItems = document
+    .querySelector(`.${delFrom}`)
+    .querySelectorAll('li');
+  console.log(listItems);
+  listItems.forEach((item) => {
+    const inputValue = item.querySelector('input').value;
+
+    if (inputValue === text) {
+      item.remove();
+    }
+  });
+}
+function delTextLocalStorage(text, delFrom) {
+  if (delFrom === 'done') {
+    const index = doneTasks.indexOf(text);
+    if (index !== -1) {
+      doneTasks.splice(index, 1);
+      saveToLocalStorage();
+    }
+  } else if (delFrom === 'nowdo') {
+    const index = inProgressTasks.indexOf(text);
+    if (index !== -1) {
+      inProgressTasks.splice(index, 1);
+      saveToLocalStorage();
+    }
+  } else if (delFrom === 'todo') {
+    const index = todoTasks.indexOf(text);
+    if (index !== -1) {
+      todoTasks.splice(index, 1);
+      saveToLocalStorage();
+    }
+  }
+}
 function init() {
   // let data = JSON.parse(localStorage.getItem('doneTasks'));
-
   // console.log(data);
   // Save the modified data back to local storage
   createlists(doneTasks, 'done');
@@ -526,57 +469,19 @@ function createlists(arr, container) {
     <button class="del-btn">
   <i class="fa-solid fa-trash"></i>
   </button>`;
-    listItem.setAttribute('id', Tracker++);
+    // listItem.setAttribute('id', Tracker++);
     listItem.querySelector('input').value = task;
     document.querySelector('.nowdo').appendChild(listItem);
     listItem.querySelector('.del-btn').addEventListener('click', (e) => {
       console.log(e.target.closest('.del-btn'));
-      // console.log(e.target.closest('li').getAttribute('id'));
+      console.log(e.target.closest('ul').className);
 
-      // console.log(e.target.closest('li'));
-      // button.closest('li').remove();
-      // document.querySelector('.nowdo').closest('li').remove();
+      // delText(e.target.closest('li').querySelector('input').value, e.target.closest('ul').className)
+      delTextLocalStorage(
+        e.target.closest('li').querySelector('input').value,
+        e.target.closest('ul').className
+      );
 
-      if (container === 'done') {
-        console.log(e.target.closest('li').querySelector('input').value);
-        let selectedDeleted = e.target
-          .closest('li')
-          .querySelector('input').value;
-        for (let i = 0; i < doneTasks.length; i++) {
-          if (doneTasks[i] === selectedDeleted) {
-            doneTasks.splice(i, 1);
-            localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
-            break;
-          }
-        }
-      } else if (container === 'nowdo') {
-        console.log(e.target.closest('li').querySelector('input').value);
-        let selectedDeleted = e.target
-          .closest('li')
-          .querySelector('input').value;
-        for (let i = 0; i < inProgressTasks.length; i++) {
-          if (inProgressTasks[i] === selectedDeleted) {
-            inProgressTasks.splice(i, 1);
-            localStorage.setItem(
-              'inProgressTasks',
-              JSON.stringify(inProgressTasks)
-            );
-            break;
-          }
-        }
-      } else if (container === 'todo') {
-        console.log(e.target.closest('li').querySelector('input').value);
-        let selectedDeleted = e.target
-          .closest('li')
-          .querySelector('input').value;
-        for (let i = 0; i < todoTasks.length; i++) {
-          if (todoTasks[i] === selectedDeleted) {
-            todoTasks.splice(i, 1);
-            localStorage.setItem('todoTasks', JSON.stringify(todoTasks));
-            break;
-          }
-        }
-      }
       e.target.closest('li').remove();
     });
     listItem.querySelector('.edit-btn').addEventListener('click', () => {
@@ -585,10 +490,8 @@ function createlists(arr, container) {
     });
     // console.log(document.querySelector(`.${container}`));
     document.querySelector(`.${container}`).appendChild(listItem);
-
     listItem.querySelector('input').addEventListener('focus', (e) => {
       // console.log('Input has focus');
-
       console.log(e.target.value);
       txt = e.target.value;
       oldValueTask = e.target.value;
@@ -596,18 +499,7 @@ function createlists(arr, container) {
     });
     listItem.querySelector('input').addEventListener('change', (e) => {
       txt = e.target.value;
-
       console.log(e.target.value);
-
-      // console.log(it.closest('li').getAttribute('id'));
-      //
-      // loadFromLocalStorage();
-      // setDone(it.closest('li').getAttribute('id'), event.target.value);
-      // if(e.target.closest('ul'))
-      // console.log(doneTasks);
-      // foundedIndex = -1;
-      // doneTasks = JSON.parse(localStorage.getItem('doneTasks'))
-
       //to handle the updating the local storage when edit the inputs
       if (e.target.closest('ul').className === 'todo') {
         for (let i = 0; i < todoTasks.length; i++) {
@@ -648,27 +540,11 @@ function createlists(arr, container) {
           doneTasks.push(e.target.value);
         }
       }
-      // doneTasks.forEach((tasks) => {
-      //   // console.log(tasks);
-      //   if (tasks === oldValueTask.trim()) {
-      //     tasks = e.target.value;
-      //   }
-
-      // console.log(doneTasks);
-      window.location.reload();
-
+      // window.location.reload();
       saveToLocalStorage();
     });
   });
   reload();
-  localReload();
 }
 init();
 addEventListenerAgain();
-reload();
-// localReload();
-// arr = [1, 2, 4]
-// arr.forEach(x => {
-//   if (x === 2) x = 100;
-// })
-// console.log(arr);
